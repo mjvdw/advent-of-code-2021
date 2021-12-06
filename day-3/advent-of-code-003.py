@@ -2,7 +2,6 @@ OXYGEN = "OXYGEN"
 CO2 = "CO2"
 
 
-
 def get_values():
     values = []
 
@@ -72,18 +71,13 @@ def part_one():
     binary = ""
 
     for n in range(len(values[0])):
-        binary = binary + get_most_common_at_position(n, values)
+        binary = binary + count_at_position(n, values, OXYGEN)
 
-    # gamma = convert_binary_to_number(binary)
-    # epsilon = convert_binary_to_number(invert(binary))
-
-    # print("Gamma:", gamma)
-    # print("Epsilon:", epsilon)
-
-    # answer = gamma * epsilon
-    # print("Answer", answer)
-
-    return binary
+    gamma = convert_binary_to_number(binary)
+    epsilon = convert_binary_to_number(invert(binary))
+    answer = gamma * epsilon
+    
+    print("Answer:", answer)
 
 
 def part_two():
@@ -100,14 +94,11 @@ def part_two():
     
     oxygen_generator = convert_binary_to_number(get_binary_result(values, OXYGEN))
     co2_scrubber = convert_binary_to_number(get_binary_result(values, CO2))
-
-    print("O2", oxygen_generator)
-    print("CO2", co2_scrubber)
-
     answer = oxygen_generator * co2_scrubber
+    
     print("Answer:", answer)
 
 
 if __name__ == "__main__":
-    # part_one()
+    part_one()
     part_two()
