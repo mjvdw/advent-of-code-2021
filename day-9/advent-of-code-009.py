@@ -3,7 +3,8 @@ class Floor:
         self.map = map
         self.max_height = len(self.map) - 1
         self.max_width = len(self.map[0]) - 1
-        
+
+
     def is_lowest(self, x, y):
         adjacent = list(map(lambda x : int(x) ,self.get_adjacent(x, y)))
         value = int(self.value(x, y))
@@ -44,6 +45,10 @@ class Floor:
         value = int(self.map[y][x])
         return value
 
+    
+    def basins(self):
+        print("Getting basins!")
+
 
 def get_floor_map_from_file():
     with open("puzzle-input.txt") as f:
@@ -67,5 +72,12 @@ def part_one():
     print("Answer", total_risk_level)
 
 
+def part_two():
+    floor = Floor(get_floor_map_from_file())
+
+    
+
+
 if __name__ == "__main__":
-    part_one()
+    # part_one()
+    part_two()
