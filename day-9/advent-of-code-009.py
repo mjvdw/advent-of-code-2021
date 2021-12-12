@@ -8,11 +8,7 @@ class Floor:
     def is_lowest(self, x, y):
         adjacent = list(map(lambda x : int(x) ,self.get_adjacent(x, y)))
         value = int(self.value(x, y))
-
-        if value < min(adjacent):
-            return True
-        else:
-            return False
+        return value < min(adjacent)
 
 
     def get_adjacent(self, x, y):
@@ -56,6 +52,7 @@ def get_floor_map_from_file():
         content = [line.strip("\n") for line in content]
         return content
 
+
 def part_one():
     floor = Floor(get_floor_map_from_file())
 
@@ -74,10 +71,9 @@ def part_one():
 
 def part_two():
     floor = Floor(get_floor_map_from_file())
-
+    
     
 
-
 if __name__ == "__main__":
-    # part_one()
+    part_one()
     part_two()
