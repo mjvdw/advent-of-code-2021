@@ -6,9 +6,9 @@ class Floor:
 
 
     def is_lowest(self, x, y):
-        adjacent = list(map(lambda x : int(x) ,self.get_adjacent(x, y)))
-        value = int(self.value(x, y))
-        return value < min(adjacent)
+        adjacent = self.get_adjacent(x, y)
+        value = self.value(x, y)
+        return value < min([self.value(a[0],a[1]) for a in adjacent])
 
 
     def get_adjacent(self, x, y):
@@ -17,22 +17,22 @@ class Floor:
         # Get values above and below.
         # Check whether value is in top or bottom row, otherwise take values above and below.
         if y == 0:
-            adjacent.append(self.map[y+1][x])
+            adjacent.append((x, y+1))
         elif y == self.max_height:
-            adjacent.append(self.map[y-1][x])
+            adjacent.append((x, y-1))
         else:
-            adjacent.append(self.map[y-1][x])
-            adjacent.append(self.map[y+1][x])
+            adjacent.append((x, y+1))
+            adjacent.append((x, y-1))
 
         # Get values left and right.
         # Check whether value is far left or far right, otherwise take both left and right.
         if x == 0:
-            adjacent.append(self.map[y][x+1])
+            adjacent.append((x+1, y))
         elif x == self.max_width:
-            adjacent.append(self.map[y][x-1])
+            adjacent.append((x-1, y))
         else:
-            adjacent.append(self.map[y][x-1])
-            adjacent.append(self.map[y][x+1])
+            adjacent.append((x+1, y))
+            adjacent.append((x-1, y))
 
         return adjacent
 
@@ -41,9 +41,27 @@ class Floor:
         value = int(self.map[y][x])
         return value
 
+
+    @property
+    def lowest_points(self):
+        points = []
+
+        for y in range(self.max_height + 1):
+            for x in range(self.max_width + 1):
+                if self.is_lowest(x, y):
+                    points.append((x, y))
+
+        return points
+
     
+    @property
     def basins(self):
-        print("Getting basins!")
+        basins = []
+        for point in self.lowest_points:
+            basin = [self.value(point[0],point[1])]
+            adjacent_points = self.get_adjacent(point[0],point[1])                    
+
+        return basins
 
 
 def get_floor_map_from_file():
@@ -71,9 +89,11 @@ def part_one():
 
 def part_two():
     floor = Floor(get_floor_map_from_file())
+
+    basins = floor.basins
     
     
 
 if __name__ == "__main__":
-    part_one()
+    # part_one()
     part_two()
