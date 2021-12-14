@@ -3,10 +3,50 @@ class Polymer():
         self.polymer_string = polymer_string
         self.pairs = pairs
 
-    def run_pair_insertion(self):
-        insertion_values = []
-        pair_keys = list(self.pairs.keys())
+        self.pair_count = dict.fromkeys(self.pairs.keys(), 0)
+        for pair in self.pairs.keys():
+            self.pair_count[pair] = self.polymer_string.count(pair)
 
+        all_pairs_str = "".join([pair for pair in self.pairs.keys()])
+        unique_elements = list(set(all_pairs_str))
+        self.element_count = dict.fromkeys(unique_elements,0)
+        for element in unique_elements:
+            self.element_count[element] = self.polymer_string.count(element)
+
+
+    def run_pair_insertion(self):
+        new_count_dict = dict.fromkeys(self.pairs.keys(),0)
+
+        for pair in self.pairs.keys():
+            count = self.pair_count[pair]
+            if count > 0:
+                new_pair_1 = pair[:1] + self.pairs[pair]
+                new_pair_2 = self.pairs[pair] + pair[1:]
+
+                new_count_dict[new_pair_1] += count
+                new_count_dict[new_pair_2] += count
+
+                self.element_count[self.pairs[pair]] += count
+
+        self.pair_count = new_count_dict
+
+        # Option 1
+        # insertion_values = []
+        # for i in range(len(self.polymer_string)-1):
+        #     pair = self.polymer_string[i] + self.polymer_string[i+1]
+        #     insertion_value = self.pairs[pair]
+        #     insertion_values.append(insertion_value)
+
+        # new_polymer_list = list(zip(self.polymer_string, insertion_values))
+        # new_polymer_str = ""
+
+        # for element_pair in new_polymer_list:
+        #     for element in element_pair:
+        #         new_polymer_str += element
+        
+        # self.polymer_string = new_polymer_str + self.polymer_string[-1]
+
+        # Option 2
         # search_keys = []
         # for pair in pair_keys:
         #     if pair in self.polymer_string:
@@ -21,57 +61,18 @@ class Polymer():
 
         # self.interate_pair_dict()
 
-        for i in range(len(self.polymer_string)-1):
-            pair = self.polymer_string[i] + self.polymer_string[i+1]
-            insertion_value = self.pairs[pair]
-            insertion_values.append(insertion_value)
-
-        new_polymer_list = list(zip(self.polymer_string, insertion_values))
-        new_polymer_str = ""
-
-        for element_pair in new_polymer_list:
-            for element in element_pair:
-                new_polymer_str += element
-        
-        self.polymer_string = new_polymer_str + self.polymer_string[-1]
-
-
-
-    def interate_pair_dict(self):
-        if len(list(self.pairs.values())[0]) == 1:
-            for key in self.pairs.keys():
-                self.pairs[key] = key[:1] + self.pairs[key] + key[1:]
-        # else:
-        #     new_pairs = {}
-        #     for key in self.pairs.keys():
-        #         new_pairs[]
-
-        print(self.pairs)
-
-
-    def count_all_element_occurrences(self):
-        unique = list(set(self.polymer_string))
-        count_dict = dict.fromkeys(unique, 0)
-        
-        for element in unique:
-            count_dict[element] = self.polymer_string.count(element)
-
-        return count_dict
-
     @property
     def most_common_element(self):
-        occurrences = self.count_all_element_occurrences()
-        most_common_element = max(occurrences, key=occurrences.get)
+        most_common_element = max(self.element_count, key=self.element_count.get)
         return most_common_element
 
     @property
     def least_common_element(self):
-        occurrences = self.count_all_element_occurrences()
-        most_common_element = min(occurrences, key=occurrences.get)
+        most_common_element = min(self.element_count, key=self.element_count.get)
         return most_common_element
 
     def get_element_occurrences(self, element):
-        return self.polymer_string.count(element)
+        return self.element_count[element]
 
 
 def get_content_from_file():
@@ -94,14 +95,12 @@ def get_content_from_file():
         return template, pairs
 
 
-def part_one():
+def get_element_count(steps):
     template, pairs = get_content_from_file()
     polymer = Polymer(template, pairs)
 
-    print(polymer.polymer_string)
-
     i = 0
-    while i < 10:
+    while i < steps:
         polymer.run_pair_insertion()
         i += 1
 
@@ -112,4 +111,5 @@ def part_one():
 
 
 if __name__ == "__main__":
-    part_one()
+    get_element_count(10)
+    get_element_count(40)
