@@ -5,6 +5,21 @@ class Polymer():
 
     def run_pair_insertion(self):
         insertion_values = []
+        pair_keys = list(self.pairs.keys())
+
+        # search_keys = []
+        # for pair in pair_keys:
+        #     if pair in self.polymer_string:
+        #         search_keys.append(pair)
+
+        # for key in search_keys:
+        #     insertion_value = key[0] + self.pairs[key] + key[1]
+        #     self.polymer_string = self.polymer_string.replace(key, insertion_value)
+        #     # print(key, insertion_value)
+
+        # print(self.polymer_string)
+
+        # self.interate_pair_dict()
 
         for i in range(len(self.polymer_string)-1):
             pair = self.polymer_string[i] + self.polymer_string[i+1]
@@ -19,6 +34,20 @@ class Polymer():
                 new_polymer_str += element
         
         self.polymer_string = new_polymer_str + self.polymer_string[-1]
+
+
+
+    def interate_pair_dict(self):
+        if len(list(self.pairs.values())[0]) == 1:
+            for key in self.pairs.keys():
+                self.pairs[key] = key[:1] + self.pairs[key] + key[1:]
+        # else:
+        #     new_pairs = {}
+        #     for key in self.pairs.keys():
+        #         new_pairs[]
+
+        print(self.pairs)
+
 
     def count_all_element_occurrences(self):
         unique = list(set(self.polymer_string))
@@ -68,6 +97,8 @@ def get_content_from_file():
 def part_one():
     template, pairs = get_content_from_file()
     polymer = Polymer(template, pairs)
+
+    print(polymer.polymer_string)
 
     i = 0
     while i < 10:
