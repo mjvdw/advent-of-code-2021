@@ -10,11 +10,28 @@ class Grid:
         self.grid = self.generate_grid_from_coords(self.coords)
 
     def generate_grid_from_coords(self, coords):
+        height = []
+        width = []
+        
+        for coord in coords:
+            height.append(coord[0])
+            width.append(coord[1])
+
+        max_height = max(height)
+        max_width = max(width)
+
+        grid = []
+        row = [False] * (max_width + 1)
+        for i in range(max_height + 1):
+            grid.append(row.copy())
+
+        for coord in coords:
+            grid[coord[0]][coord[1]] = True
+
+        return grid
+
+    def fold(self, instruction):
         pass
-
-    # List of lists to represent the grid itself - go with True or False instead of # and .
-
-    # Def to fold grid at line, either x or y (optional arguments?)
 
 
 def get_content_from_file():
@@ -32,13 +49,22 @@ def get_content_from_file():
         instructions_raw.pop(0)
         instructions = []
         for i in instructions_raw:
-            print(i)
+            i = i.strip("fold along ")
+            direction = i[0]
+            coord = int(i.split("=")[1])
+            instructions.append(Instruction(direction, coord))
 
         return grid, instructions
 
 
 def part_one():
     grid, instructions = get_content_from_file()
+
+    print(grid.grid)
+
+    for instruction in instructions:
+        grid.fold(instruction)
+        break    # Break after first iteration just for part one
 
 
 if __name__ == "__main__":
