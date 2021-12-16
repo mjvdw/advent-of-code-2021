@@ -1,3 +1,7 @@
+class Basin:
+    def __init__(self, coords):
+        self.coords = coords
+
 class Floor:
     def __init__(self, map):
         self.map = map
@@ -57,11 +61,32 @@ class Floor:
     @property
     def basins(self):
         basins = []
-        for point in self.lowest_points:
-            basin = [self.value(point[0],point[1])]
-            adjacent_points = self.get_adjacent(point[0],point[1])                    
+        # lowest_points = self.lowest_points.copy()
+        lowest_points = [self.lowest_points[0], self.lowest_points[1], self.lowest_points[2]].copy()
+
+        for point in lowest_points:
+            coords_to_search = [point]
+            basin_coords = []
+            searched = []
+            while len(coords_to_search) > 0:
+                next_coords_to_search = []
+
+                for coord in coords_to_search:
+                    if self.value(coord[0],coord[1]) < 9 and coord not in searched:
+                        searched.append(coord)
+                        basin_coords.append(coord)
+                        next_coords_to_search = self.get_adjacent(coord[0],coord[1])
+                    else:
+                        searched.append(coord)
+
+                coords_to_search = next_coords_to_search
+
+                basins.append(basin_coords)
+
+        print(basins)
 
         return basins
+        
 
 
 def get_floor_map_from_file():
